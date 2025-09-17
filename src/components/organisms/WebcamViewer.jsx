@@ -35,9 +35,14 @@ const WebcamViewer = ({
   ];
 
   const initCamera = async () => {
-    try {
+try {
       setIsLoading(true);
       setError(null);
+
+      // Check if mediaDevices API is available
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("Camera API not supported in this browser. Please use a modern browser like Chrome, Firefox, or Safari.");
+      }
 
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
@@ -51,8 +56,11 @@ const WebcamViewer = ({
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await new Promise((resolve) => {
+        await new Promise((resolve, reject) => {
           videoRef.current.onloadedmetadata = resolve;
+          videoRef.current.onerror = reject;
+          // Add timeout to prevent hanging
+          setTimeout(() => reject(new Error("Video loading timeout")), 10000);
         });
       }
 
@@ -60,9 +68,31 @@ const WebcamViewer = ({
       setIsLoading(false);
     } catch (err) {
       console.error("Camera access error:", err);
-      setError(`Camera access denied: ${err.message}`);
+      
+      let userMessage = "Unable to access camera";
+      let errorDetails = err.message;
+
+      // Categorize specific error types for better user guidance
+      if (err.name === 'NotAllowedError' || err.message.includes('Permission denied')) {
+        userMessage = "Camera access denied";
+        errorDetails = "Please allow camera access in your browser and refresh the page. Look for the camera icon in your address bar.";
+      } else if (err.name === 'NotFoundError') {
+        userMessage = "No camera found";
+        errorDetails = "Please connect a camera to your device and try again.";
+      } else if (err.name === 'NotReadableError') {
+        userMessage = "Camera in use";
+        errorDetails = "Your camera might be used by another application. Please close other apps using the camera and try again.";
+      } else if (err.name === 'OverconstrainedError') {
+        userMessage = "Camera configuration error";
+        errorDetails = "Your camera doesn't support the required settings. Try using a different camera.";
+      } else if (err.name === 'SecurityError' || err.message.includes('secure')) {
+        userMessage = "Security restriction";
+        errorDetails = "Camera access requires a secure connection (HTTPS). Please check your connection.";
+      }
+
+      setError(`${userMessage}: ${errorDetails}`);
       setIsLoading(false);
-      toast.error("Failed to access camera. Please check permissions.");
+      toast.error(`${userMessage}. Please check the error details and try again.`);
     }
   };
 
@@ -247,7 +277,7 @@ const WebcamViewer = ({
     };
   }, []);
 
-  if (error) {
+if (error) {
     return (
       <Card variant="gradient" className={className}>
         <Error
