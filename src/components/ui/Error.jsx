@@ -47,11 +47,13 @@ const Error = ({
           </Button>
         )}
         
-        <div className="text-xs text-gray-500 space-y-1">
+<div className="text-xs text-gray-500 space-y-1">
           <p>• Make sure your camera is connected and working</p>
           <p>• Check browser permissions for camera access</p>
           <p>• Try refreshing the page or restarting your browser</p>
           <p>• Ensure no other apps are using your camera</p>
+          <p>• If camera shows black screen, try different browser or update drivers</p>
+          <p>• For black display: check camera privacy settings and hardware switch</p>
         </div>
       </div>
     </div>

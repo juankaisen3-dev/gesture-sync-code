@@ -52,15 +52,41 @@ try {
         }
       });
 
-      streamRef.current = stream;
+streamRef.current = stream;
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        
+        // Wait for metadata to load and then play the video
         await new Promise((resolve, reject) => {
-          videoRef.current.onloadedmetadata = resolve;
-          videoRef.current.onerror = reject;
-          // Add timeout to prevent hanging
-          setTimeout(() => reject(new Error("Video loading timeout")), 10000);
+          const timeoutId = setTimeout(() => {
+            reject(new Error("Video loading timeout - camera stream may not be displaying properly"));
+          }, 10000);
+
+          videoRef.current.onloadedmetadata = async () => {
+            try {
+              // Attempt to play the video to ensure it displays
+              await videoRef.current.play();
+              clearTimeout(timeoutId);
+              
+              // Verify video is actually playing and not black
+              setTimeout(() => {
+                if (videoRef.current.videoWidth === 0 || videoRef.current.videoHeight === 0) {
+                  reject(new Error("Video stream appears to be empty or black - please check camera settings"));
+                } else {
+                  resolve();
+                }
+              }, 500);
+            } catch (playError) {
+              clearTimeout(timeoutId);
+              reject(new Error(`Video playback failed: ${playError.message}. Try refreshing the page or checking browser settings.`));
+            }
+          };
+
+          videoRef.current.onerror = (event) => {
+            clearTimeout(timeoutId);
+            reject(new Error("Video element error - camera feed cannot be displayed"));
+          };
         });
       }
 
