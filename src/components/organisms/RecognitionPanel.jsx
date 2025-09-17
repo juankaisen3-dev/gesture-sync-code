@@ -141,7 +141,7 @@ const RecognitionPanel = ({
                 {currentGesture.name}
               </h3>
               <p className="text-gray-400 mb-3">
-                {availableGestures.find(g => g.name === currentGesture.name)?.description || 
+{availableGestures.find(g => g.name_c === currentGesture.name)?.description_c || 
                  "Hand gesture detected"}
               </p>
               <div className="flex items-center text-sm text-gray-500">
@@ -216,7 +216,7 @@ const RecognitionPanel = ({
             {history.length > 0 ? (
               history.map((gesture, index) => (
                 <GestureCard
-                  key={`${gesture.id || gesture.name}-${index}`}
+key={`${gesture.id || gesture.name}-${index}`}
                   gesture={gesture}
                   isActive={index === 0}
                   showTimestamp={true}
@@ -251,7 +251,7 @@ const RecognitionPanel = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-white text-sm truncate">
-                  {gesture.name}
+{gesture.name_c || gesture.name}
                 </div>
                 <div className="text-xs text-gray-400 truncate">
                   {gesture.description}

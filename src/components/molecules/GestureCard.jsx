@@ -58,7 +58,7 @@ const GestureCard = ({
               : "bg-gradient-to-br from-primary/20 to-secondary/20"
           )}>
             <ApperIcon 
-              name={getGestureIcon(gesture.name)} 
+name={getGestureIcon(gesture.name_c || gesture.name)}
               className={cn(
                 "w-5 h-5",
                 isActive ? "text-white" : "text-primary"
@@ -70,12 +70,12 @@ const GestureCard = ({
             <h3 className="font-semibold text-white truncate">
               {gesture.name}
             </h3>
-            {gesture.category && (
-              <Badge 
+{(gesture.category_c || gesture.category) && (
+              <Badge
                 variant={getCategoryVariant(gesture.category)}
-                className="mt-1"
+variant={getCategoryVariant(gesture.category_c || gesture.category)} 
               >
-                {gesture.category}
+{gesture.category_c || gesture.category}
               </Badge>
             )}
           </div>
@@ -84,10 +84,10 @@ const GestureCard = ({
         <div className="text-right">
           <div className={cn(
             "text-lg font-bold",
-            gesture.confidence >= 0.8 ? "text-accent" :
-            gesture.confidence >= 0.6 ? "text-warning" : "text-error"
+(gesture.confidence_c || gesture.confidence) >= 0.8 ? "text-accent" :
+            (gesture.confidence_c || gesture.confidence) >= 0.6 ? "text-warning" : "text-error"
           )}>
-            {Math.round((gesture.confidence || 0) * 100)}%
+            {Math.round(((gesture.confidence_c || gesture.confidence) || 0) * 100)}%
           </div>
           {showTimestamp && gesture.timestamp && (
             <div className="text-xs text-gray-400 mt-1">
@@ -97,9 +97,9 @@ const GestureCard = ({
         </div>
       </div>
 
-      {gesture.description && (
+{(gesture.description_c || gesture.description) && (
         <p className="text-sm text-gray-400 mt-3 leading-relaxed">
-          {gesture.description}
+{gesture.description_c || gesture.description}
         </p>
       )}
 

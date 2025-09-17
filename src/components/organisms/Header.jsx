@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import Button from "@/components/atoms/Button";
+import React, { useContext, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { AuthContext } from "../../App";
 import ApperIcon from "@/components/ApperIcon";
 import SettingsPanel from "@/components/molecules/SettingsPanel";
-import { motion, AnimatePresence } from "framer-motion";
-
+import Button from "@/components/atoms/Button";
 const Header = ({
   onSettingsChange,
   settings = {},
@@ -35,11 +35,11 @@ const Header = ({
               <div className="hidden sm:flex items-center space-x-4 text-sm">
                 <div className="flex items-center text-gray-400">
                   <ApperIcon name="Eye" className="w-4 h-4 mr-2" />
-                  <span>{settings.showSkeleton ? "Skeleton On" : "Skeleton Off"}</span>
+<span>{(settings.show_skeleton_c ?? settings.showSkeleton) ? "Skeleton On" : "Skeleton Off"}</span>
                 </div>
                 <div className="flex items-center text-gray-400">
                   <ApperIcon name="BarChart3" className="w-4 h-4 mr-2" />
-                  <span>Threshold: {Math.round((settings.detectionThreshold || 0.7) * 100)}%</span>
+<span>Threshold: {Math.round(((settings.detection_threshold_c ?? settings.detectionThreshold) || 0.7) * 100)}%</span>
                 </div>
               </div>
 
@@ -51,7 +51,10 @@ const Header = ({
               >
                 <ApperIcon name="Settings" className="w-4 h-4 mr-2" />
                 Settings
-              </Button>
+</Button>
+
+              {/* Logout Button */}
+              <LogoutButton />
             </div>
           </div>
         </div>
@@ -86,10 +89,30 @@ const Header = ({
               />
             </motion.div>
           </motion.div>
-        )}
+)}
       </AnimatePresence>
     </>
   );
 };
 
-export default Header;
+// Logout Button Component
+const LogoutButton = () => {
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    if (confirm("Are you sure you want to logout?")) {
+      await logout();
+    }
+  };
+
+  return (
+    <Button
+      onClick={handleLogout}
+      variant="ghost"
+      size="sm"
+    >
+      <ApperIcon name="LogOut" className="w-4 h-4 mr-2" />
+      Logout
+    </Button>
+  );
+};

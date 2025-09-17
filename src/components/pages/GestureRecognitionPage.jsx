@@ -19,7 +19,7 @@ const GestureRecognitionPage = () => {
     try {
       setLoading(true);
       setError(null);
-      const settingsData = await settingsService.getSettings();
+const settingsData = await settingsService.getSettings();
       setSettings(settingsData);
     } catch (err) {
       console.error("Failed to load settings:", err);
@@ -44,7 +44,7 @@ const GestureRecognitionPage = () => {
     setCurrentGesture(gesture);
     
     // Show toast notification for high confidence detections
-    if (gesture.confidence >= settings.detectionThreshold) {
+if (gesture.confidence >= (settings.detection_threshold_c || settings.detectionThreshold || 0.7)) {
       toast.info(`Detected: ${gesture.name}`, {
         autoClose: 2000
       });

@@ -35,14 +35,14 @@ const SettingsPanel = ({
         {/* Detection Threshold */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-300">
-            Detection Threshold: {Math.round((settings.detectionThreshold || 0.7) * 100)}%
+Detection Threshold: {Math.round(((settings.detection_threshold_c ?? settings.detectionThreshold) || 0.7) * 100)}%
           </label>
           <input
             type="range"
             min="0.1"
             max="1.0"
             step="0.05"
-            value={settings.detectionThreshold || 0.7}
+value={(settings.detection_threshold_c ?? settings.detectionThreshold) || 0.7}
             onChange={(e) => handleSliderChange("detectionThreshold", e.target.value)}
             className="w-full h-2 bg-surface rounded-lg appearance-none cursor-pointer slider"
           />
@@ -54,14 +54,14 @@ const SettingsPanel = ({
         {/* Frame Rate */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-300">
-            Detection Frame Rate: {settings.detectionFrameRate || 30} FPS
+Detection Frame Rate: {(settings.detection_frame_rate_c ?? settings.detectionFrameRate) || 30} FPS
           </label>
           <input
             type="range"
             min="10"
             max="60"
             step="5"
-            value={settings.detectionFrameRate || 30}
+value={(settings.detection_frame_rate_c ?? settings.detectionFrameRate) || 30}
             onChange={(e) => handleSliderChange("detectionFrameRate", e.target.value)}
             className="w-full h-2 bg-surface rounded-lg appearance-none cursor-pointer slider"
           />
@@ -72,49 +72,49 @@ const SettingsPanel = ({
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-gray-300">Show Hand Skeleton</span>
             <Button
-              onClick={() => handleToggle("showSkeleton")}
-              variant={settings.showSkeleton ? "primary" : "secondary"}
+onClick={() => handleToggle("showSkeleton")}
+              variant={(settings.show_skeleton_c ?? settings.showSkeleton) ? "primary" : "secondary"}
               size="sm"
             >
-              <ApperIcon name={settings.showSkeleton ? "Eye" : "EyeOff"} className="w-4 h-4" />
+<ApperIcon name={(settings.show_skeleton_c ?? settings.showSkeleton) ? "Eye" : "EyeOff"} className="w-4 h-4" />
             </Button>
           </div>
 
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-gray-300">Show Confidence</span>
             <Button
-              onClick={() => handleToggle("showConfidence")}
-              variant={settings.showConfidence ? "primary" : "secondary"}
+onClick={() => handleToggle("showConfidence")}
+              variant={(settings.show_confidence_c ?? settings.showConfidence) ? "primary" : "secondary"}
               size="sm"
             >
-              <ApperIcon name={settings.showConfidence ? "BarChart3" : "BarChart"} className="w-4 h-4" />
+<ApperIcon name={(settings.show_confidence_c ?? settings.showConfidence) ? "BarChart3" : "BarChart"} className="w-4 h-4" />
             </Button>
           </div>
 
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-gray-300">Enable History</span>
             <Button
-              onClick={() => handleToggle("enableHistory")}
-              variant={settings.enableHistory ? "primary" : "secondary"}
+onClick={() => handleToggle("enableHistory")}
+              variant={(settings.enable_history_c ?? settings.enableHistory) ? "primary" : "secondary"}
               size="sm"
             >
-              <ApperIcon name={settings.enableHistory ? "History" : "HistoryIcon"} className="w-4 h-4" />
+<ApperIcon name={(settings.enable_history_c ?? settings.enableHistory) ? "History" : "HistoryIcon"} className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
         {/* History Size */}
-        {settings.enableHistory && (
+{(settings.enable_history_c ?? settings.enableHistory) && (
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-300">
-              History Size: {settings.historySize || 10} items
+History Size: {(settings.history_size_c ?? settings.historySize) || 10} items
             </label>
             <input
               type="range"
               min="5"
               max="50"
               step="5"
-              value={settings.historySize || 10}
+value={(settings.history_size_c ?? settings.historySize) || 10}
               onChange={(e) => handleSliderChange("historySize", e.target.value)}
               className="w-full h-2 bg-surface rounded-lg appearance-none cursor-pointer slider"
             />
@@ -125,7 +125,7 @@ const SettingsPanel = ({
         <div className="pt-4 border-t border-gray-700">
           <Button
             onClick={() => onUpdateSettings({
-              detectionThreshold: 0.7,
+detectionThreshold: 0.7,
               showSkeleton: true,
               showConfidence: true,
               detectionFrameRate: 30,
