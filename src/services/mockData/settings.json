@@ -1,0 +1,18 @@
+{
+  "Id": 1,
+  "detectionThreshold": 0.7,
+  "showSkeleton": true,
+  "showConfidence": true,
+  "cameraId": "default",
+  "detectionFrameRate": 30,
+  "minHandSize": 0.1,
+  "maxHands": 2,
+  "smoothingFactor": 0.5,
+  "enableHistory": true,
+  "historySize": 10,
+  "confidenceColors": {
+    "high": "#10B981",
+    "medium": "#F59E0B",
+    "low": "#EF4444"
+  }
+}
