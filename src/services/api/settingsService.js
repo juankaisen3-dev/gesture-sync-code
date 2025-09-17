@@ -254,4 +254,3 @@ class SettingsService {
 }
 
 export default new SettingsService();
-export default new SettingsService();
