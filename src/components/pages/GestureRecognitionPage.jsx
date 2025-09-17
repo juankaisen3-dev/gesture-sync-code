@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "@/components/organisms/Header";
+import Header from "@/components/organisms/Header";
 import WebcamViewer from "@/components/organisms/WebcamViewer";
 import RecognitionPanel from "@/components/organisms/RecognitionPanel";
 import CameraControls from "@/components/molecules/CameraControls";
